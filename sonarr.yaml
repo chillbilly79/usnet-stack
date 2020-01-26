@@ -1,0 +1,50 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: sonarr-sts
+   labels:
+     app: sonarr
+ spec:
+   replicas: 1
+   selector:
+      matchLabels:
+        app: sonarr
+   template:
+     metadata:
+       labels:
+         app: sonarr
+ 
+     spec:
+      containers:
+         - name: sonarr
+           image: linuxserver/sonarr
+           ports:
+             - containerPort: 8989
+           volumeMounts:
+             - mountPath: /config
+               name: config
+               subPath: sonarr/config
+             - mountPath: /tv
+               name: media
+               subPath: media/tv
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: pvc-nfs-pv-large
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-nfs-pv0
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sonarr-service
+spec:
+  selector:
+    app: sonarr
+  ports:
+  - protocol: TCP
+    port: 8989
+    targetPort: 8989
+  type: NodePort

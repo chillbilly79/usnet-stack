@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv0
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv0"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv1
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv1"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv2
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv2"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv3
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv3"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv4
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv4"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-pv-large
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 13Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.1.3
+    path: "/kubedata/pv-large"
+

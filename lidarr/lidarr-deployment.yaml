@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lidarr-deployment
+  labels:
+    app: lidarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lidarr
+  template:
+    metadata:
+      labels:
+        app: lidarr
+    spec:
+      nodeSelector:
+        nfs1: "true"
+      containers:
+      - name: lidarr
+        image: linuxserver/lidarr
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8686
+        env:
+        - name: PGID
+          value: "113"
+        - name: PUID
+          value: "1000"
+        volumeMounts:
+        - name: lidarr
+          mountPath: /config
+        - name: downloads
+          mountPath: /downloads
+        - name: music
+          mountPath: /music
+      volumes:
+      - name: lidarr
+        hostPath:
+          path: /mnt/fileserver/kubernetes/lidarr
+      - name: downloads
+        hostPath:
+          path: /mnt/fileserver/media/downloads
+      - name: music
+        hostPath:
+          path: /mnt/fileserver/media/music

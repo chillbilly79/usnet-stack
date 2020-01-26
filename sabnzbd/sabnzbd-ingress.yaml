@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sabnzbd
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - sabnzbd.burntsheep.com
+    secretName: sabnzbd-cert
+  rules:
+  - host: sabnzbd.burntsheep.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sabnzbd
+          servicePort: 80

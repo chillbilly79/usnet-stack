@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-deployment
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      nodeSelector:
+        nfs1: "true"
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8989
+        env:
+        - name: TZ
+          value: "America/Los_Ageles"
+        - name: PGID
+          value: "113"
+        - name: PUID
+          value: "1000"
+        volumeMounts:
+        - name: sonarr
+          mountPath: /config
+        - name: downloads
+          mountPath: /downloads
+        - name: tv
+          mountPath: /tv
+      volumes:
+      - name: sonarr
+        hostPath:
+          path: /mnt/fileserver/kubernetes/sonarr
+      - name: downloads
+        hostPath:
+          path: /mnt/fileserver/media/downloads
+      - name: tv
+        hostPath:
+          path: /mnt/fileserver/media/tv

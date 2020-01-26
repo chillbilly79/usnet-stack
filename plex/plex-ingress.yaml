@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: plex
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - plex.burntsheep.com
+    secretName: plex-cert
+  rules:
+  - host: plex.burntsheep.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: plex
+          servicePort: 80

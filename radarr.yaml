@@ -1,0 +1,51 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: radarr-deployment
+   labels:
+     app: radarr
+ spec:
+   replicas: 1
+   selector:
+      matchLabels:
+        app: radarr
+   template:
+     metadata:
+       labels:
+         app: radarr
+ 
+     spec:
+      containers:
+         - name: radarr
+           image: linuxserver/radarr
+           ports:
+             - containerPort: 7878
+           volumeMounts:
+             - mountPath: /config
+               name: nfs
+               subPath: radarr
+             - mountPath: /downloads
+               name: nfs
+               subPath: radarr-downloads
+             - mountPath: /movies
+               name: nfs
+               subPath: media/movies
+      volumes:
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: pvc-nfs-pv1
+          
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: radarr-service
+spec:
+  selector:
+    app: radarr
+  ports:
+  - protocol: TCP
+    port: 7878
+    targetPort: 7878
+  type: NodePort

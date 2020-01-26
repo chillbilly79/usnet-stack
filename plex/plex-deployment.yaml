@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      nodeSelector:
+        nfs1: "true"
+        san1: "true"
+      hostNetwork: true
+      containers:
+      - name: plexms
+        image: plexinc/pms-docker
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 32400
+          name: "plex"
+          protocol: TCP
+        - containerPort: 3005
+          name: "plex-management"
+          protocol: TCP
+        - containerPort: 8324
+          name: "plex2"
+          protocol: TCP
+        - containerPort: 32469
+          name: "plex3"
+          protocol: TCP
+        - containerPort: 1900
+          name: "plex4"
+          protocol: UDP
+        - containerPort: 32410
+          name: "plex5"
+          protocol: UDP
+        - containerPort: 32412
+          name: "plex6"
+          protocol: UDP
+        - containerPort: 32413
+          name: "plex7"
+          protocol: UDP
+        - containerPort: 32414
+          name: "plex8"
+          protocol: UDP
+        env:
+        - name: TZ
+          value: "America/Los_Ageles"
+        - name: HOSTNAME
+          value: "chill-mediaKube"
+        - name: PLEX_CLAIM
+          value: "claim-K1x8m36HR_jqDp8mpCaw"
+        - name: PLEX_UID
+          value: "1000"
+        - name: PLEX_GID
+          value: "113"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: media
+          mountPath: /data
+        - name: transcode
+          mountPath: /transcode
+      volumes:
+      - name: media
+        hostPath:
+          path: /mnt/fileserver/media
+      - name: config
+        hostPath:
+          path: /mnt/san/kubernetes/plex
+      - name: transcode
+        hostPath:
+          path: /mnt/san/transcode

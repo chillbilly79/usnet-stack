@@ -1,0 +1,60 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: sabnzbd-deployment
+   labels:
+     app: sabnzbd
+ spec:
+   replicas: 1
+   selector:
+      matchLabels:
+        app: sabnzbd
+   template:
+     metadata:
+       labels:
+         app: sabnzbd
+ 
+     spec:
+      containers:
+         - name: sabnzbd
+           image: linuxserver/sabnzbd
+           ports:
+             - containerPort: 8080
+           volumeMounts:
+             - mountPath: /config
+               name: sab-config
+             - mountPath: /downloads/tv
+               name: downloads
+               subPath: tv
+             - mountPath: /downloads/movies
+               name: downloads
+               subPath: movies
+             - mountPath: /downloads/music
+               name: downloads
+               subPath: music               
+             - mountPath: /incomplete-downloads
+               name: incomplete
+      volumes:
+        - name: sab-config
+          hostPath:
+            path: /mnt/fileserver/kubernetes/sabnzbd/config
+        - name: downloads
+          hostPath:
+            path: /mnt/fileserver/media/downloads
+        - name: incomplete
+          hostPath:
+            path: /mnt/fileserver/kubernetes/sabnzbd/incomplete-downloads
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sabnzbd-service
+spec:
+  selector:
+    app: sabnzbd
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: NodePort
