@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: radarr
+  namespace: usenet-stack
+spec:
+  rules:
+  - host: radarr.homedns.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: radarr
+          servicePort: 7878

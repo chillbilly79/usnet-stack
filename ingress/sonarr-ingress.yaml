@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sonarr
+  namespace: usenet-stack
+spec:
+  rules:
+  - host: sonarr.homedns.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sonarr
+          servicePort: 8989

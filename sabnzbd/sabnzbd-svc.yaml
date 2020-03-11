@@ -1,14 +1,13 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: sabnzbd
-  labels:
-    app: sabnzbd
-    kubernetes.io/name: "sabnzbd"
+  name: sabnzbd-service
+  namespace: usenet-stack
 spec:
   selector:
     app: sabnzbd
   ports:
-  - name: sabnzbd
-    port: 80
+  - protocol: TCP
+    port: 8080
     targetPort: 8080
+  type: NodePort

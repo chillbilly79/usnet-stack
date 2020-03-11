@@ -2,6 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: sabnzbd
+  namespace: usenet-stack
 spec:
   accessModes:
     - ReadWriteOnce
