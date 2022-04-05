@@ -1,0 +1,86 @@
+version: "2.1"
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - "E:/media-server/config/sonarr:/config"
+      - "E:/media-server/data/tv:/tv" #optional
+      - "E:/media-server/data/downloads:/downloads" #optional
+    ports:
+      - 8989:8989
+    restart: always
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - "E:/media-server/config/radarr:/config"
+      - "E:/media-server/data/movies:/movies" #optional
+      - "E:/media-server/data/downloads:/downloads" #optional
+    ports:
+      - 7878:7878
+    restart: always
+
+  plexms:
+    container_name: plex
+    restart: always
+    image: plexinc/pms-docker
+    volumes:
+      - "E:/media-server/config/plex:/config"
+      - "C:/plex-transcode:/transcode"
+      - "E:/media-server/data:/data"     
+    ports:
+      - "32400:32400/tcp"
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32469:32469/tcp"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    environment:
+      - TZ=America/Denver
+      - HOSTNAME="chillDesktopMedia"
+      - PLEX_CLAIM="claim-xW1mVsbPFyGuFCQ_CsSm"
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - ADVERTISE_IP="http://96.19.177.169:32400/"
+      - ALLOWED_NETWORKS=192.168.1.0/24
+
+  ombi:
+    container_name: ombi
+    restart: always
+    image: linuxserver/ombi
+    volumes:
+      - "E:/media-server/config/ombi:/config"     
+    ports:
+      - "3579:3579"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+
+  sabnzbd:
+    image: "linuxserver/sabnzbd"
+    container_name: "sabnzbd"
+    volumes:
+      - "E:/media-server/config/sabnzbd:/config"
+      - "E:/media-server/data/downloads:/downloads"
+      - "E:/media-server/data/incomplete-downloads:/incomplete-downloads"      
+    ports:
+        - "8080:8080"
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver

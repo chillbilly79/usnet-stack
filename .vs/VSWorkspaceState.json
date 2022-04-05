@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Docker",
+    "\\Docker\\media-server"
   ],
-  "SelectedNode": "\\E:\\source\\usnet-stack",
+  "SelectedNode": "\\Docker\\media-server\\MediaServer-DockerContainers.txt",
   "PreviewInSolutionExplorer": false
 }
