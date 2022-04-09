@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   sonarr:
-    image: lscr.io/linuxserver/sonarr
+    image: linuxserver/sonarr
     container_name: sonarr
     environment:
       - PUID=1000
@@ -16,7 +16,7 @@ services:
     restart: always
 
   radarr:
-    image: lscr.io/linuxserver/radarr
+    image: linuxserver/radarr
     container_name: radarr
     environment:
       - PUID=1000
